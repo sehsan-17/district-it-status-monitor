@@ -1,0 +1,14 @@
+# Runtime output written by the collectors and pipeline
+data/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Never commit credentials
+*.json.key
+*credentials*.json
+service-account*.json
+.env

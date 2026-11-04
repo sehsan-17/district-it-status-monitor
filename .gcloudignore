@@ -1,0 +1,13 @@
+# Files Cloud Build does not need for the container image
+.git
+.gitignore
+.gcloudignore
+data/
+tests/
+docs/
+dashboard/
+deploy/
+ops/
+README.md
+__pycache__/
+*.pyc
