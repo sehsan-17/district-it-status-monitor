@@ -1,0 +1,189 @@
+{
+  "description": "Public operational status collectors. Exported inventory; collectors currently keep their source constants in code and do not read this JSON at runtime.",
+  "collector_count": 10,
+  "expected_scoped_observations_per_complete_run": 25,
+  "output_file": "data/status_checks.jsonl",
+  "cloud_loaded_fields": [
+    "vendor",
+    "source_type",
+    "observed_at",
+    "status_indicator",
+    "status_description"
+  ],
+  "public_identifiers_note": "Page, product, component, and check identifiers below are public scope identifiers, not authentication tokens.",
+  "sources": [
+    {
+      "collector": "scripts/fetch_goguardian_status.py",
+      "source_type": "vendor_reported",
+      "output_scopes": [
+        "GoGuardian"
+      ],
+      "method": "GET",
+      "authentication": "none for the public endpoint used by this collector",
+      "url": "https://status.goguardian.com/api/v2/summary.json"
+    },
+    {
+      "collector": "scripts/fetch_smartpass_status.py",
+      "source_type": "vendor_reported",
+      "output_scopes": [
+        "SmartPass"
+      ],
+      "method": "GET",
+      "authentication": "none for the public endpoint used by this collector",
+      "url": "https://smartpass.instatus.com/summary.json",
+      "status_map": {
+        "UP": "none",
+        "HASISSUES": "issues",
+        "UNDERMAINTENANCE": "maintenance"
+      }
+    },
+    {
+      "collector": "scripts/fetch_classlink_status.py",
+      "source_type": "vendor_reported",
+      "output_scopes": [
+        "ClassLink"
+      ],
+      "method": "GET",
+      "authentication": "none for the public endpoint used by this collector",
+      "url": "https://status.classlink.com/api/v2/summary.json"
+    },
+    {
+      "collector": "scripts/fetch_frontline_status.py",
+      "source_type": "vendor_reported",
+      "output_scopes": [
+        "Frontline Education"
+      ],
+      "method": "GET",
+      "authentication": "none for the public endpoint used by this collector",
+      "url": "https://status.frontlineeducation.com/api/v2/summary.json",
+      "scope_note": "Vendor-wide summary; may cover products the district does not use."
+    },
+    {
+      "collector": "scripts/fetch_google_workspace_status.py",
+      "source_type": "vendor_reported",
+      "output_scopes": [
+        "Google Workspace",
+        "Google Workspace - Gmail",
+        "Google Workspace - Classroom",
+        "Google Workspace - Drive",
+        "Google Workspace - Calendar",
+        "Google Workspace - Meet",
+        "Google Workspace - Docs",
+        "Google Workspace - Sheets",
+        "Google Workspace - Slides",
+        "Google Workspace - Forms",
+        "Google Workspace - Chat",
+        "Google Workspace - Sites",
+        "Google Workspace - Admin Console",
+        "Google Workspace - Sign In"
+      ],
+      "method": "GET",
+      "authentication": "none for the public endpoint used by this collector",
+      "url": "https://www.google.com/appsstatus/dashboard/incidents.json",
+      "product_ids": {
+        "Google Workspace - Gmail": "prPt2Yra2CbGsbEm9cpC",
+        "Google Workspace - Classroom": "3GoNVrVz48jeNZSyLJMV",
+        "Google Workspace - Drive": "VHNA7p3Z5p3iakj5sA8V",
+        "Google Workspace - Calendar": "n5hVexuq1PM9onY9qrmo",
+        "Google Workspace - Meet": "sUH4BQXzYXma7NiS94Hi",
+        "Google Workspace - Docs": "wNHuVFtZEWU5Mmj2eRCK",
+        "Google Workspace - Sheets": "GsNjeYHsogeRgTiC5coU",
+        "Google Workspace - Slides": "DvWBgkXVhodA3WYwgZoB",
+        "Google Workspace - Forms": "3mtqLXm6QxeM6bAVkVez",
+        "Google Workspace - Chat": "Ht9Vx5PFzDPHYvrnrvSk",
+        "Google Workspace - Sites": "RxkDBi3TRJ5uf3dhPYiT",
+        "Google Workspace - Admin Console": "xrkLpNMHAvPQczcU2uSb",
+        "Google Workspace - Sign In": "TKCGxL5V9653G1XwH6nw"
+      },
+      "scope_note": "Incident-derived snapshots; no ongoing reported incident does not prove measured availability. The 'Google Workspace' scope covers every product in Google's feed; the others are school-relevant products."
+    },
+    {
+      "collector": "scripts/fetch_chatgpt_status.py",
+      "source_type": "vendor_reported",
+      "output_scopes": [
+        "ChatGPT"
+      ],
+      "method": "GET",
+      "authentication": "none for the public endpoint used by this collector",
+      "url": "https://status.openai.com/api/v2/summary.json",
+      "component_ids": {
+        "01JMXBNJXGV1T5GT2M9XA83XNG": "Conversations",
+        "01JMXBNJXG1S2D9V65P1ZZTD94": "Login"
+      },
+      "scope_note": "ChatGPT Conversations and Login only; excludes API-only and other ChatGPT features."
+    },
+    {
+      "collector": "scripts/fetch_realtime_status.py",
+      "source_type": "external_monitor",
+      "output_scopes": [
+        "Realtime SIS",
+        "Realtime - Parent Portal",
+        "Realtime - Student Portal"
+      ],
+      "method": "POST",
+      "authentication": "none for the public endpoint used by this collector",
+      "public_report_url": "https://nodeping.com/reports/statusevents/UWVWG8OSC0CKEBWK",
+      "url": "https://nodeping.com/reports/statusevents/UWVWG8OSC0CKEBWK/listchecks",
+      "request_json": {
+        "offset": 0
+      },
+      "check_ids": {
+        "2014051312262UQ8L-67EOIJ0F": "Realtime SIS",
+        "2014051312262UQ8L-QLIAYSFJ": "Realtime - Parent Portal",
+        "2014051312262UQ8L-419M6GFA": "Realtime - Student Portal"
+      },
+      "probe_max_age_minutes": 15,
+      "probe_max_future_skew_minutes": 5,
+      "note": "Public page-backed read-only lookup. Does not create, edit, or run checks. Endpoint stability is not guaranteed."
+    },
+    {
+      "collector": "scripts/fetch_iready_status.py",
+      "source_type": "vendor_reported",
+      "output_scopes": [
+        "i-Ready"
+      ],
+      "method": "GET",
+      "authentication": "none for the public endpoint used by this collector",
+      "url": "https://status.io/1.0/status/64d25bf4adb04b052efa180e",
+      "component_ids": {
+        "657a05d83736b40535788453": "General",
+        "64d25bf4adb04b052efa181e": "Reports",
+        "64d289945983aa0534501489": "Rosters",
+        "64ee3fdc5983aa0534501d67": "Logins",
+        "68e56665bb28ac0523813261": "Secure Browser",
+        "699368f7a9387506045e8ceb": "Fluency Flight",
+        "64ee3fea94d27b05355389e2": "Classroom",
+        "64ee400ef65cc40530c920cf": "Success Central",
+        "64ee3fffe88a000536314969": "Teacher Toolbox"
+      },
+      "scope_note": "Nine selected production components; excludes unrelated products and corporate/demo/support sites."
+    },
+    {
+      "collector": "scripts/fetch_cisco_meraki_status.py",
+      "source_type": "vendor_reported",
+      "output_scopes": [
+        "Cisco Meraki"
+      ],
+      "method": "GET",
+      "authentication": "none for the public endpoint used by this collector",
+      "url": "https://status.meraki.net/api/v2/summary.json",
+      "component_group": "North and South America",
+      "scope_note": "Region group children only (Dashboard, API, device connectivity, Access Point, Switch, WAN appliance, Camera). Meraki posts only critical, broad outages on this page; it is not a check of district equipment."
+    },
+    {
+      "collector": "scripts/fetch_incident_iq_status.py",
+      "source_type": "vendor_reported",
+      "output_scopes": [
+        "Incident IQ"
+      ],
+      "method": "GET",
+      "authentication": "none for the public endpoint used by this collector",
+      "url": "https://status.incidentiq.com/api/v2/summary.json",
+      "component_names": [
+        "Platform",
+        "API"
+      ],
+      "scope_note": "Core Platform and API components only; third-party integration components on the same page are excluded."
+    }
+  ]
+}

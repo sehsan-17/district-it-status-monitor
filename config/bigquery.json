@@ -1,0 +1,7 @@
+{
+  "project_id": "your-gcp-project-id",
+  "dataset_id": "district_monitoring",
+  "location": "US",
+  "maximum_bytes_billed": 104857600,
+  "staging_expiration_hours": 24
+}
